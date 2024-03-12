@@ -40,6 +40,12 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   flutter_switch: ^0.3.2
   casa_vertical_stepper: ^0.0.5
+  cloud_firestore: ^4.3.0
+  firebase_auth: ^4.2.3
+  firebase_core: ^2.4.0
+  firebase_storage: ^11.0.9
+  fluttertoast:
+  google_maps_flutter:
 
 
 dev_dependencies:
