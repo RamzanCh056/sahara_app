@@ -3,6 +3,7 @@ import 'package:sahara_app/screens/home_screen/Qurran_Book/Tabs/surah_playing.da
 
 import '../../../../themes/app_colors.dart';
 import '../../../../themes/app_textStyle.dart';
+import '../quran.dart';
 
 class BySurahTab extends StatefulWidget {
   const BySurahTab({super.key});
@@ -41,7 +42,10 @@ class _BySurahTabState extends State<BySurahTab> {
             onTap: (){
               setState(() {
               if(index==0){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> SurahPlaying()));
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> Quran(surahNumber: 1,)));
+              }
+              if(index==1){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> Quran(surahNumber: 2,)));
               }
               });
             },

@@ -1,192 +1,114 @@
-// import 'package:casa_vertical_stepper/casa_vertical_stepper.dart';
+//
 // import 'package:flutter/material.dart';
-// import 'package:sahara_app/themes/app_textStyle.dart';
-// import '../../../themes/app_colors.dart';
+// import 'package:google_maps_flutter/google_maps_flutter.dart';
 //
 // class MapScreen extends StatefulWidget {
-//   const MapScreen({super.key});
+//   const MapScreen({Key? key}) : super(key: key);
 //
 //   @override
 //   State<MapScreen> createState() => _MapScreenState();
 // }
 //
 // class _MapScreenState extends State<MapScreen> {
-//   bool _isExtend=false;
-//   int activeStep=0;
+//   late GoogleMapController mapController;
+//   List
+//   <LatLng> polylineCoordinates = [];
 //
-//   final stepperPlace = [
+//   // Define coordinates for all points
+//   LatLng meeqat = LatLng(21.4270, 39.9179); // Coordinates for Meeqat, Saudi Arabia
+//   LatLng alMasjidHaram = LatLng(21.4225, 39.8262); // Coordinates for Al-Masjid al-Haram, Saudi Arabia
+//   LatLng mina = LatLng(21.3891, 39.8634); // Coordinates for Mina, Saudi Arabia
+//   LatLng plainsOfArafat = LatLng(21.3333, 39.9833); // Coordinates for Plains of Arafat, Saudi Arabia
+//   LatLng muzdalifah = LatLng(21.39, 39.95); // Coordinates for Muzdalifah, Saudi Arabia
 //
-// 'Meeqat',
-//     'Al Masjid Haram',
-//     'Mina',
-//     'Plains of Arafat',
-//     'Muzdalifah',
-//     'Back to Mina',
-//     'Al Masjid Haram',
-//     'Meeqat'
+//   // Add markers for each point
+//   Set<Marker> markers = {
+//     Marker(
+//       markerId: MarkerId('meeqat'),
+//       position:  LatLng(21.4270, 39.9179),
+//       infoWindow: InfoWindow(title: 'Meeqat'),
+//     ),
+//     Marker(
+//       markerId: MarkerId('al_masjid_haram'),
+//       position:  LatLng(21.4225, 39.8262),
+//       infoWindow: InfoWindow(title: 'Al-Masjid al-Haram (12Km away)'),
+//     ),
+//     Marker(
+//       markerId: MarkerId('mina'),
+//       position: LatLng(21.3891, 39.8634),
+//   infoWindow: InfoWindow(title: 'Mina'),
+//     ),
+//     Marker(
+//       markerId: MarkerId('plains_of_arafat'),
+//       position:  LatLng(21.3333, 39.9833),
+//       infoWindow: InfoWindow(title: 'Plains of Arafat'),
+//     ),
+//     Marker(
+//       markerId: MarkerId('muzdalifah'),
+//       position: LatLng(21.39, 39.95),
+//       infoWindow: InfoWindow(title: 'Muzdalifah'),
+//     ),
+//   };
 //
+//   @override
+//   void initState() {
+//     super.initState();
+//     _addPolyline();
+//   }
 //
-//   ];
-//   final stepperPlaceNumber = [
-//     '1',
-//     '2',
-//     '3',
-//     '4',
-//     '5',
-//     '6',
-//     '7',
-//     '8',
-//   ];
-//
-//
-//
-//
-//
+//   void _addPolyline() {
+//     // Add points to the polylineCoordinates list
+//     polylineCoordinates.add(meeqat);
+//     polylineCoordinates.add(alMasjidHaram);
+//     polylineCoordinates.add(mina);
+//     polylineCoordinates.add(plainsOfArafat);
+//     polylineCoordinates.add(muzdalifah);
+//   }
 //
 //   @override
 //   Widget build(BuildContext context) {
-//     return SafeArea(child: Scaffold(body:     Stack(
-//       clipBehavior: Clip.none,
-//       children: [
-//         const Image(
-//             width: double.infinity,
-//             fit: BoxFit.cover,
-//             image:
-//             AssetImage("assets/images/home_screen/Map.png")),
-//         Positioned(
-//           top: 10,
-//           child: Padding(
-//             padding: const EdgeInsets.symmetric(horizontal: 10),
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 GestureDetector(
-//                     onTap: (){
-//                       Navigator.pop(context);
-//                     },
-//                     child
-//                         : const Icon(Icons.arrow_back,color: AppColors.primaryWhite,)),
-//               ],
-//             ),
-//           ),
-//         ),
-//         Padding(
-//           padding: _isExtend?const EdgeInsets.only(top: 85):const EdgeInsets.only(top: 620),
-//           child: Container(
-//             width: MediaQuery.of(context).size.width * 1,
-//             height: MediaQuery.of(context).size.height * 0.90,
-//             padding: const EdgeInsets.symmetric( vertical: 10),
-//             decoration: const BoxDecoration(
-//                 color: AppColors.primaryWhite,
-//                 borderRadius: BorderRadius.only(
-//                     topLeft: Radius.circular(10),
-//                     topRight: Radius.circular(10))),
-//             child: SingleChildScrollView(
-//               scrollDirection: Axis.vertical,
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 mainAxisAlignment: MainAxisAlignment.start,
-//                 children: [
-//           const SizedBox(height: 10,),
+//     return SafeArea(
+//       child: Scaffold(
+//         body: Stack(
+//           children: [
+//             GoogleMap(
+//               mapType: MapType.normal,
+//               onMapCreated: (GoogleMapController controller) {
+//                 mapController = controller;
+//               },
+//               initialCameraPosition: CameraPosition(
+//                 target: alMasjidHaram, // Initial camera position set to Al-Masjid al-Haram
+//                 zoom: 10, // Adjust the zoom level as needed
+//               ),
+//               markers: markers,
+//               polylines: {
 //
-//                   GestureDetector(
-//                     onTap: (){
-//                       setState(() {
-//                         _isExtend=!_isExtend;
-//                       });
-//                     },
-//                     child: Center(
-//                       child: Container(height: 12,width: MediaQuery.sizeOf(context).width*0.30,
-//                       decoration: BoxDecoration(
-//                         borderRadius: BorderRadius.circular(5),
-//                         color: const Color(0xf557D8CAC),
-//                       ),
-//                     ),
-//                     ),
-//                   ),
-//                   const SizedBox(height: 15,),
-//             ListView.builder(
-//               scrollDirection: Axis.vertical,
-//            physics: const ScrollPhysics(),
-//               shrinkWrap: true,itemCount: stepperPlaceNumber.length,
-//               itemBuilder: (BuildContext context, int index) { return     SizedBox(
-//
-//                 width: MediaQuery.sizeOf(context).width*1,
-//                 child: CasaVerticalStepperView(steps: [
-//                 StepperStep(
-//                   isExpanded: true,
-//                   title: Row(
-//                     crossAxisAlignment: CrossAxisAlignment.center,
-//                     mainAxisAlignment: MainAxisAlignment.start,
-//                     children: [
-//                       Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
-//                         children: [
-//                           Row(
-//                             crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
-//
-//                             children: [
-//                               Text(stepperPlace[index].toString(),style: AppTextStyles.boldStyle.copyWith(color: AppColors.titleColor,fontSize: 15),),
-// const SizedBox(width: 10,),
-//                               index==0?
-//                           const CircleAvatar(
-//                             radius: 10,
-//                             backgroundColor: AppColors.greenColor,child: Icon(
-//                             Icons.done,size: 10,color: AppColors.primaryWhite,
-//                           ),
-//                           )
-//                               :
-//                                 Text('(1.2km away)',style: AppTextStyles.regularStyle.copyWith(color: AppColors.greenColor,fontSize: 12),),
-//
-//
-//                            ],
-//                           ),
-//                           Text('Alsouq Alsagheer Tunnel, Al Hajla...',style: AppTextStyles.regularStyle.copyWith(color: const Color(0xff7D8CAC),fontSize: 14),),
-//                         ],
-//                       ),
-// const SizedBox(width: 5),
-//                       const CircleAvatar(
-//                         radius: 15,
-//                 backgroundColor: AppColors.hintTextColor,child: Icon(
-//                 Icons.arrow_forward_ios,size: 15,color: AppColors.primaryWhite,
-//                       ),
-//                       )
-//                     ],
-//                   ),
-//                   leading:
-//
-//                   Container(
-//                     padding: const EdgeInsets.all(10),
-//                     decoration: BoxDecoration(
-//                         shape: BoxShape.circle,
-//                         border:Border.all(color: const Color(0xff7D8CAC))
-//                     ),
-//                     child:     Text(stepperPlaceNumber[index].toString(),style: AppTextStyles.boldStyle.copyWith(color:  const Color(0xff7D8CAC),fontSize: 16),),
-//                   ),
-//
-//
-//                   view:const Column(
-//                     crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
-//                     children: [
-//
-//                     ],
-//                   ),
+//                 Polyline(
+//                   polylineId: PolylineId('meeqat_to_muzdalifah'),
+//                   color: Colors.black,
+//                   width: 10,
+//                   points: polylineCoordinates,
 //                 ),
-//                             ],seperatorColor: AppColors.hintTextColor,),
-//               );
-//             },
-//            )
-//
-//
-//                 ],
+//               },
+//             ),
+//             Positioned(
+//               top: 10,
+//               left: 10,
+//               child: GestureDetector(
+//                 onTap: () {
+//                   Navigator.pop(context);
+//                 },
+//                 child: Icon(Icons.arrow_back),
 //               ),
 //             ),
-//           ),
+//           ],
 //         ),
-//       ],
-//     ),));
+//       ),
+//     );
 //   }
 // }
+import 'dart:math' show cos, sqrt, asin;
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -199,6 +121,74 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   late GoogleMapController mapController;
+  List
+  <LatLng> polylineCoordinates = [];
+
+  // Define coordinates for all points
+  LatLng meeqat = LatLng(21.4270, 39.9179); // Coordinates for Meeqat, Saudi Arabia
+  LatLng alMasjidHaram = LatLng(21.4225, 39.8262); // Coordinates for Al-Masjid al-Haram, Saudi Arabia
+  LatLng mina = LatLng(21.3891, 39.8634); // Coordinates for Mina, Saudi Arabia
+  LatLng plainsOfArafat = LatLng(21.3333, 39.9833); // Coordinates for Plains of Arafat, Saudi Arabia
+  LatLng muzdalifah = LatLng(21.39, 39.95); // Coordinates for Muzdalifah, Saudi Arabia
+
+  // Add markers for each point
+  Set
+  <Marker> markers = {};
+
+  @override
+  void initState() {
+
+    super.initState();
+    _addMarkers();
+    _addPolyline();
+  }
+
+  void _addMarkers() {
+    markers.add(
+      Marker(
+        markerId: MarkerId('meeqat'),
+        position: meeqat,
+        infoWindow: InfoWindow(title: 'Meeqat'),
+      ),
+    );
+    markers.add(
+      Marker(
+        markerId: MarkerId('al_masjid_haram'),
+        position: alMasjidHaram,
+        infoWindow: InfoWindow(title: 'Al-Masjid al-Haram'),
+      ),
+    );
+    markers.add(
+      Marker(
+        markerId: MarkerId('mina'),
+        position: mina,
+        infoWindow: InfoWindow(title: 'Mina'),
+      ),
+    );
+    markers.add(
+      Marker(
+        markerId: MarkerId('plains_of_arafat'),
+        position: plainsOfArafat,
+        infoWindow: InfoWindow(title: 'Plains of Arafat'),
+      ),
+    );
+    markers.add(
+      Marker(
+        markerId: MarkerId('muzdalifah'),
+        position: muzdalifah,
+        infoWindow: InfoWindow(title: 'Muzdalifah'),
+      ),
+    );
+  }
+
+  void _addPolyline() {
+    // Add points to the polylineCoordinates list
+    polylineCoordinates.add(meeqat);
+    polylineCoordinates.add(alMasjidHaram);
+    polylineCoordinates.add(mina);
+    polylineCoordinates.add(plainsOfArafat);
+    polylineCoordinates.add(muzdalifah);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -207,13 +197,23 @@ class _MapScreenState extends State<MapScreen> {
         body: Stack(
           children: [
             GoogleMap(
+              mapType: MapType.normal,
               onMapCreated: (GoogleMapController controller) {
                 mapController = controller;
               },
               initialCameraPosition: CameraPosition(
-                target: LatLng(51.5074, -0.1278), // Coordinates for London, United Kingdom
-                zoom: 8, // Adjust the zoom level as needed
+                target: alMasjidHaram, // Initial camera position set to Al-Masjid al-Haram
+                zoom: 10, // Adjust the zoom level as needed
               ),
+              markers: markers,
+              polylines: {
+                Polyline(
+                  polylineId: PolylineId('meeqat_to_muzdalifah'),
+                  color: Colors.black,
+                  width: 10,
+                  points: polylineCoordinates,
+                ),
+              },
             ),
             Positioned(
               top: 10,

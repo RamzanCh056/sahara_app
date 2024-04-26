@@ -47,7 +47,8 @@ dependencies:
   fluttertoast:
   google_maps_flutter:
 
-
+  quran:
+  just_audio:
 dev_dependencies:
   flutter_test:
     sdk: flutter
